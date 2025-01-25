@@ -53,6 +53,8 @@ module LinkThumbnailer
       headers.each { |k, v| http.headers[k] = v }
       http.override_headers['User-Agent'] = user_agent
       config.http_override_headers.each { |k, v| http.override_headers[k] = v }
+      http.headers.delete('Accept')
+      http.headers.delete('Accept-Encoding')
     end
 
     def set_http_options
