@@ -118,15 +118,18 @@ describe LinkThumbnailer::Processor do
   describe '#set_http_headers' do
 
     let(:user_agent)  { 'foo' }
+    let(:accept)      { 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' }
     let(:headers)     { instance.send(:http).override_headers }
     let(:action)      { instance.send(:set_http_headers) }
 
     before do
       allow(instance).to receive(:user_agent).and_return(user_agent)
+      allow(instance).to receive(:accept).and_return(accept)
       action
     end
 
     it { expect(headers['User-Agent']).to eq(user_agent) }
+    it { expect(headers['Accept']).to eq(accept) }
 
   end
 

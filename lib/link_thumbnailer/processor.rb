@@ -52,6 +52,7 @@ module LinkThumbnailer
     def set_http_headers(headers = {})
       headers.each { |k, v| http.headers[k] = v }
       http.override_headers['User-Agent'] = user_agent
+      http.override_headers['Accept'] = accept
       config.http_override_headers.each { |k, v| http.override_headers[k] = v }
     end
 
@@ -110,6 +111,10 @@ module LinkThumbnailer
 
     def user_agent
       config.user_agent
+    end
+
+    def accept
+      config.accept
     end
 
     def http_open_timeout
