@@ -53,6 +53,8 @@ module LinkThumbnailer
       headers.each { |k, v| http.headers[k] = v }
       http.override_headers['User-Agent'] = user_agent
       http.override_headers['Accept'] = accept
+      http.override_headers['Accept-Encoding'] = 'gzip, deflate'
+      http.override_headers['Accept-Language'] = 'en-US,en;q=0.9,uk;q=0.8,ru;q=0.7'
       config.http_override_headers.each { |k, v| http.override_headers[k] = v }
     end
 
