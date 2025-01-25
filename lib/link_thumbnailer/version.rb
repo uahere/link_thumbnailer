@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module LinkThumbnailer
-  VERSION = '3.4.0-5'
+  VERSION = '3.4.0-6'
 end
