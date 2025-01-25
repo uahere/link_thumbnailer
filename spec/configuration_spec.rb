@@ -8,7 +8,6 @@ describe LinkThumbnailer::Configuration do
 
   it { expect(instance.redirect_limit).to         eq(3) }
   it { expect(instance.user_agent).to             eq('link_thumbnailer') }
-  it { expect(instance.accept).to                 eq('text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9') }
   it { expect(instance.verify_ssl).to             eq(true) }
   it { expect(instance.http_open_timeout).to      eq(5) }
   it { expect(instance.http_read_timeout).to      eq(5) }

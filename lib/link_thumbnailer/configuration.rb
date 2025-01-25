@@ -24,7 +24,7 @@ module LinkThumbnailer
 
 	class Configuration
 
-    attr_accessor :redirect_limit, :blacklist_urls, :user_agent, :accept,
+    attr_accessor :redirect_limit, :blacklist_urls, :user_agent,
                   :verify_ssl, :http_open_timeout, :http_read_timeout, :attributes,
                   :graders, :description_min_length, :positive_regex, :negative_regex,
                   :image_limit, :image_stats, :raise_on_invalid_format, :max_concurrency,
@@ -40,7 +40,6 @@ module LinkThumbnailer
     def initialize
       @redirect_limit         = 3
       @user_agent             = 'link_thumbnailer'
-      @accept                 = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
       @verify_ssl             = true
       @http_open_timeout      = 5
       @http_read_timeout      = 5
@@ -66,7 +65,7 @@ module LinkThumbnailer
       @raise_on_invalid_format = false
       @max_concurrency = 20
       @scrapers = [:opengraph, :default]
-      @http_override_headers = { 'Accept-Encoding' => 'none' }
+      @http_override_headers = {}
       @download_size_limit = 10 * 1024 * 1024
       @encoding = 'utf-8'
     end

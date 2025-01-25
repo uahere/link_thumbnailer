@@ -13,7 +13,6 @@ describe LinkThumbnailer::Page do
 
     it { expect(instance.config.image_limit).to eq(2) }
     it { expect(instance.config.user_agent).to eq(LinkThumbnailer.config.user_agent) }
-    it { expect(instance.config.accept).to eq(LinkThumbnailer.config.accept) }
 
   end
 
@@ -23,7 +22,6 @@ describe LinkThumbnailer::Page do
 
     it { expect(instance.config.image_limit).to eq(LinkThumbnailer.config.image_limit) }
     it { expect(instance.config.user_agent).to eq(LinkThumbnailer.config.user_agent) }
-    it { expect(instance.config.accept).to eq(LinkThumbnailer.config.accept) }
   end
 
 end

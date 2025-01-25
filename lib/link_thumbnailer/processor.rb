@@ -52,9 +52,6 @@ module LinkThumbnailer
     def set_http_headers(headers = {})
       headers.each { |k, v| http.headers[k] = v }
       http.override_headers['User-Agent'] = user_agent
-      http.override_headers['Accept'] = accept
-      http.override_headers['Accept-Encoding'] = 'gzip, deflate'
-      http.override_headers['Accept-Language'] = 'en-US,en;q=0.9,uk;q=0.8,ru;q=0.7'
       config.http_override_headers.each { |k, v| http.override_headers[k] = v }
     end
 
@@ -66,8 +63,6 @@ module LinkThumbnailer
     end
 
     def perform_request
-      puts http.headers
-
       response          = request_in_chunks
       headers           = {}
       headers['Cookie'] = response['Set-Cookie'] if response['Set-Cookie'].present?
@@ -115,10 +110,6 @@ module LinkThumbnailer
 
     def user_agent
       config.user_agent
-    end
-
-    def accept
-      config.accept
     end
 
     def http_open_timeout
