@@ -52,9 +52,10 @@ module LinkThumbnailer
     def set_http_headers(headers = {})
       headers.each { |k, v| http.headers[k] = v }
       http.override_headers['User-Agent'] = user_agent
+      http.override_headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+      http.override_headers['Accept-Encoding'] = 'gzip, deflate, br'
+      http.override_headers['Accept-Language'] = 'uk,en;q=0.9,ru;q=0.8'
       config.http_override_headers.each { |k, v| http.override_headers[k] = v }
-      http.headers.delete('Accept')
-      http.headers.delete('Accept-Encoding')
     end
 
     def set_http_options
