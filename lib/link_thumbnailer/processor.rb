@@ -64,6 +64,8 @@ module LinkThumbnailer
     end
 
     def perform_request
+      puts http.headers
+
       response          = request_in_chunks
       headers           = {}
       headers['Cookie'] = response['Set-Cookie'] if response['Set-Cookie'].present?
