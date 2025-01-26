@@ -8,6 +8,7 @@ describe LinkThumbnailer::Configuration do
 
   it { expect(instance.redirect_limit).to         eq(3) }
   it { expect(instance.user_agent).to             eq('link_thumbnailer') }
+  it { expect(instance.accept_language).to        eq('uk,en-US,en;q=0.9,ru;q=0.8') }
   it { expect(instance.verify_ssl).to             eq(true) }
   it { expect(instance.http_open_timeout).to      eq(5) }
   it { expect(instance.http_read_timeout).to      eq(5) }

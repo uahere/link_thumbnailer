@@ -118,15 +118,18 @@ describe LinkThumbnailer::Processor do
   describe '#set_http_headers' do
 
     let(:user_agent)  { 'foo' }
+    let(:accept_language) { 'uk,en-US,en;q=0.9,ru;q=0.8' }
     let(:headers)     { instance.send(:http).override_headers }
     let(:action)      { instance.send(:set_http_headers) }
 
     before do
       allow(instance).to receive(:user_agent).and_return(user_agent)
+      allow(instance).to receive(:accept_language).and_return(accept_language)
       action
     end
 
     it { expect(headers['User-Agent']).to eq(user_agent) }
+    it { expect(headers['Accept-Language']).to eq(accept_language) }
 
   end
 
@@ -311,6 +314,18 @@ describe LinkThumbnailer::Processor do
 
     it { expect(action).to eq(user_agent) }
 
+  end
+
+  describe '#accept_language' do
+
+    let(:accept_language) { 'uk,en-US,en;q=0.9,ru;q=0.8' }
+    let(:action)          { instance.send(:accept_language) }
+
+    before do
+      instance.config.accept_language = accept_language
+    end
+
+    it { expect(action).to eq(accept_language) }
   end
 
   describe '#http_open_timeout' do

@@ -94,6 +94,10 @@ LinkThumbnailer.configure do |config|
   #
   # config.user_agent = 'link_thumbnailer'
 
+  # Set accept language
+  #
+  # config.accept_language = 'uk,en-US,en;q=0.9,ru;q=0.8'
+
   # Enable or disable SSL verification
   #
   # config.verify_ssl = true

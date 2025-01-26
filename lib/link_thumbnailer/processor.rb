@@ -52,7 +52,7 @@ module LinkThumbnailer
     def set_http_headers(headers = {})
       headers.each { |k, v| http.headers[k] = v }
       http.override_headers['User-Agent'] = user_agent
-      http.override_headers['Accept-Language'] = 'uk,en;q=0.9,ru;q=0.8'
+      http.override_headers['Accept-Language'] = accept_language
       config.http_override_headers.each { |k, v| http.override_headers[k] = v }
     end
 
@@ -111,6 +111,10 @@ module LinkThumbnailer
 
     def user_agent
       config.user_agent
+    end
+
+    def accept_language
+      config.accept_language
     end
 
     def http_open_timeout
