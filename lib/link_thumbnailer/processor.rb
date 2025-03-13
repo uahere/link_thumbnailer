@@ -60,7 +60,15 @@ module LinkThumbnailer
       http.verify_mode  = ::OpenSSL::SSL::VERIFY_NONE unless ssl_required?
       http.open_timeout = http_open_timeout
       http.read_timeout = http_read_timeout
-      http.proxy = proxy
+      if proxy
+        proxy_uri = URI.parse(proxy)
+        http.proxy = proxy_uri.host
+        http.proxy_port = proxy_uri.port
+        if proxy_uri.user || proxy_uri.password
+          http.proxy_user = proxy_uri.user
+          http.proxy_pass = proxy_uri.password
+        end
+      end
     end
 
     def perform_request
