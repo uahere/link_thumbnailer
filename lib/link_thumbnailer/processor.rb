@@ -60,18 +60,7 @@ module LinkThumbnailer
       http.verify_mode  = ::OpenSSL::SSL::VERIFY_NONE unless ssl_required?
       http.open_timeout = http_open_timeout
       http.read_timeout = http_read_timeout
-      if proxy
-        http.proxy = case proxy
-        when :ENV
-          :ENV
-        when String
-          ::URI.parse(proxy)
-        when ::URI::HTTP
-          proxy
-        else
-          raise ArgumentError, "proxy must be :ENV or a valid HTTP URI"
-        end
-      end
+      http.proxy = ::URI.parse(proxy) if proxy && proxy != :ENV
     end
 
     def perform_request
