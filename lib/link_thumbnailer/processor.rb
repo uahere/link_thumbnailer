@@ -14,7 +14,7 @@ module LinkThumbnailer
       @config = ::LinkThumbnailer.page.config
       @proxy  = config.proxy
       @proxy  = ::URI.parse(@proxy) if @proxy && @proxy != :ENV
-      @http   = ::Net::HTTP::Persistent.new(proxy: @proxy)
+      @http   = ::Net::HTTP::Persistent.new
 
       super(config)
     end
