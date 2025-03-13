@@ -61,7 +61,7 @@ module LinkThumbnailer
       http.open_timeout = http_open_timeout
       http.read_timeout = http_read_timeout
       if proxy
-        proxy_uri = URI.parse(proxy)
+        proxy_uri = ::URI.parse(proxy)
         http.proxy = proxy_uri.host
         http.proxy_port = proxy_uri.port
         if proxy_uri.user || proxy_uri.password
