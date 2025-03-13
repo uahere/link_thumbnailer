@@ -61,12 +61,15 @@ module LinkThumbnailer
       http.open_timeout = http_open_timeout
       http.read_timeout = http_read_timeout
       if proxy
-        proxy_uri = ::URI.parse(proxy)
-        http.proxy = proxy_uri.host
-        http.proxy_port = proxy_uri.port
-        if proxy_uri.user || proxy_uri.password
-          http.proxy_user = proxy_uri.user
-          http.proxy_pass = proxy_uri.password
+        http.proxy = case proxy
+        when :ENV
+          :ENV
+        when String
+          ::URI.parse(proxy)
+        when ::URI::HTTP
+          proxy
+        else
+          raise ArgumentError, "proxy must be :ENV or a valid HTTP URI"
         end
       end
     end
