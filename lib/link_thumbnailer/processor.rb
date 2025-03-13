@@ -7,7 +7,7 @@ require 'net/http/persistent'
 module LinkThumbnailer
   class Processor < ::SimpleDelegator
 
-    attr_accessor :url
+    attr_accessor :url, :proxy
     attr_reader   :config, :http, :redirect_count
 
     def initialize
@@ -60,7 +60,7 @@ module LinkThumbnailer
       http.verify_mode  = ::OpenSSL::SSL::VERIFY_NONE unless ssl_required?
       http.open_timeout = http_open_timeout
       http.read_timeout = http_read_timeout
-      http.proxy = :ENV
+      http.proxy = proxy
     end
 
     def perform_request
@@ -115,6 +115,10 @@ module LinkThumbnailer
 
     def accept_language
       config.accept_language
+    end
+
+    def proxy
+      config.proxy
     end
 
     def http_open_timeout

@@ -14,6 +14,10 @@ LinkThumbnailer.configure do |config|
   #
   # config.accept_language = 'uk,en-US,en;q=0.9,ru;q=0.8'
 
+  # Set proxy
+  #
+  # config.proxy = 'http://127.0.0.1:8080'
+
   # Enable or disable SSL verification
   #
   # config.verify_ssl = true

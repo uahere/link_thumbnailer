@@ -130,7 +130,6 @@ describe LinkThumbnailer::Processor do
 
     it { expect(headers['User-Agent']).to eq(user_agent) }
     it { expect(headers['Accept-Language']).to eq(accept_language) }
-
   end
 
   describe '#set_http_options' do
@@ -326,6 +325,19 @@ describe LinkThumbnailer::Processor do
     end
 
     it { expect(action).to eq(accept_language) }
+  end
+
+  describe '#proxy' do
+
+    let(:proxy) { 'http://127.0.0.1:8080' }
+    let(:action) { instance.send(:proxy) }
+
+    before do
+      instance.config.proxy = proxy
+    end
+
+    it { expect(action).to eq(proxy) }
+
   end
 
   describe '#http_open_timeout' do

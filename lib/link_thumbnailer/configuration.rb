@@ -29,7 +29,7 @@ module LinkThumbnailer
                   :graders, :description_min_length, :positive_regex, :negative_regex,
                   :image_limit, :image_stats, :raise_on_invalid_format, :max_concurrency,
                   :scrapers, :http_override_headers, :download_size_limit, :encoding,
-                  :favicon_size
+                  :favicon_size, :proxy
 
     alias_method :http_timeout, :http_open_timeout
     alias_method :http_timeout=, :http_open_timeout=
@@ -69,6 +69,7 @@ module LinkThumbnailer
       @http_override_headers = {}
       @download_size_limit = 10 * 1024 * 1024
       @encoding = 'utf-8'
+      @proxy = nil
     end
 
 	end

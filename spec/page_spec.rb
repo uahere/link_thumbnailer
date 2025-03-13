@@ -14,7 +14,7 @@ describe LinkThumbnailer::Page do
     it { expect(instance.config.image_limit).to eq(2) }
     it { expect(instance.config.user_agent).to eq(LinkThumbnailer.config.user_agent) }
     it { expect(instance.config.accept_language).to eq(LinkThumbnailer.config.accept_language) }
-
+    it { expect(instance.config.proxy).to eq(LinkThumbnailer.config.proxy) }
   end
 
   context 'without inline options' do
@@ -24,6 +24,7 @@ describe LinkThumbnailer::Page do
     it { expect(instance.config.image_limit).to eq(LinkThumbnailer.config.image_limit) }
     it { expect(instance.config.user_agent).to eq(LinkThumbnailer.config.user_agent) }
     it { expect(instance.config.accept_language).to eq(LinkThumbnailer.config.accept_language) }
+    it { expect(instance.config.proxy).to eq(LinkThumbnailer.config.proxy) }
   end
 
 end
