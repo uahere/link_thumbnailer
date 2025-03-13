@@ -7,12 +7,14 @@ require 'net/http/persistent'
 module LinkThumbnailer
   class Processor < ::SimpleDelegator
 
-    attr_accessor :url, :proxy
+    attr_accessor :url
     attr_reader   :config, :http, :redirect_count
 
     def initialize
       @config = ::LinkThumbnailer.page.config
-      @http   = ::Net::HTTP::Persistent.new
+      @proxy  = config.proxy
+      @proxy  = ::URI.parse(@proxy) if @proxy && @proxy != :ENV
+      @http   = ::Net::HTTP::Persistent.new(proxy: @proxy)
 
       super(config)
     end
