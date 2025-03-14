@@ -67,6 +67,10 @@ module LinkThumbnailer
 
     def perform_request
       response          = request_in_chunks
+      if response.code != 200 && http.proxy.is_a?(::URI::HTTP)
+        http.proxy = nil
+        response = request_in_chunks
+      end
       headers           = {}
       headers['Cookie'] = response['Set-Cookie'] if response['Set-Cookie'].present?
 
