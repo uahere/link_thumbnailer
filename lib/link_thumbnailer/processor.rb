@@ -7,7 +7,7 @@ require 'net/http/persistent'
 module LinkThumbnailer
   class Processor < ::SimpleDelegator
 
-    attr_accessor :url
+    attr_accessor :url, :proxy
     attr_reader   :config, :http, :redirect_count
 
     def initialize
@@ -66,15 +66,14 @@ module LinkThumbnailer
     end
 
     def perform_request
-      response          = request_in_chunks
-      if response.code != 200 && http.proxy.is_a?(::URI::HTTP)
-        http.proxy = nil
-        response = request_in_chunks
-      end
-      headers           = {}
-      headers['Cookie'] = response['Set-Cookie'] if response['Set-Cookie'].present?
+      response = request_in_chunks
 
-      raise ::LinkThumbnailer::FormatNotSupported.new(response['Content-Type']) unless valid_response_format?(response)
+      # unless response.is_a?(::Net::HTTPClientException)
+      #   headers           = {}
+      #   headers['Cookie'] = response['Set-Cookie'] if response['Set-Cookie'].present?
+
+      #   raise ::LinkThumbnailer::FormatNotSupported.new(response['Content-Type']) unless valid_response_format?(response)
+      # end
 
       case response
       when ::Net::HTTPSuccess
@@ -85,6 +84,13 @@ module LinkThumbnailer
           redirect_count + 1,
           headers
         )
+      when ::Net::HTTPClientException
+        if http.proxy_uri.is_a?(::URI::HTTP)
+          http.proxy = nil
+          perform_request
+        else
+          response.error!
+        end
       else
         response.error!
       end
@@ -101,6 +107,8 @@ module LinkThumbnailer
       end
       response.body = body
       response
+    rescue ::Net::HTTPExceptions, ::Net::HTTPClientException, ::SocketError, ::Timeout::Error, ::Net::HTTP::Persistent::Error => e
+      response = ::Net::HTTPClientException.new(e.message, nil)
     end
 
     def resolve_relative_url(location)
