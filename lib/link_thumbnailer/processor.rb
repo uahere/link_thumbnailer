@@ -84,13 +84,6 @@ module LinkThumbnailer
           redirect_count + 1,
           headers
         )
-      when ::Net::HTTPClientException
-        if http.proxy_uri.is_a?(::URI::HTTP)
-          http.proxy = nil
-          perform_request
-        else
-          response.error!
-        end
       else
         response.error!
       end
@@ -108,7 +101,12 @@ module LinkThumbnailer
       response.body = body
       response
     rescue ::Net::HTTPExceptions, ::Net::HTTPClientException, ::SocketError, ::Timeout::Error, ::Net::HTTP::Persistent::Error => e
-      response = ::Net::HTTPClientException.new(e.message, nil)
+      if proxy.present?
+        http.proxy = nil
+        request_in_chunks
+      else
+        raise e
+      end
     end
 
     def resolve_relative_url(location)
