@@ -101,7 +101,7 @@ module LinkThumbnailer
       response.body = body
       response
     rescue ::Net::HTTPExceptions, ::Net::HTTPClientException, ::SocketError, ::Timeout::Error, ::Net::HTTP::Persistent::Error => e
-      if http.proxy.present?
+      if http.proxy_uri.present?
         http.proxy = nil
         request_in_chunks
       else
