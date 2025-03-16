@@ -11,6 +11,16 @@ module LinkThumbnailer
       def initialize
         @images = []
         @videos = []
+        @first_image = nil
+      end
+
+      def first_image
+        return @first_image if @first_image.present?
+
+        image = images.first
+        return unless image
+
+        @first_image = Down.download(image.src)
       end
 
       def video=(video)
