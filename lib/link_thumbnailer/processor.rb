@@ -66,19 +66,16 @@ module LinkThumbnailer
     end
 
     def perform_request
-      response = request_in_chunks
-
-      # unless response.is_a?(::Net::HTTPClientException)
-      #   headers           = {}
-      #   headers['Cookie'] = response['Set-Cookie'] if response['Set-Cookie'].present?
-
-      #   raise ::LinkThumbnailer::FormatNotSupported.new(response['Content-Type']) unless valid_response_format?(response)
-      # end
+      response          = request_in_chunks
+      headers           = {}
+      headers['Cookie'] = response['Set-Cookie'] if response['Set-Cookie'].present?
 
       case response
       when ::Net::HTTPSuccess
         Response.new(response).body
       when ::Net::HTTPRedirection
+        raise ::LinkThumbnailer::FormatNotSupported.new(response['Content-Type']) unless valid_response_format?(response)
+
         call(
           resolve_relative_url(response['location'].to_s),
           redirect_count + 1,

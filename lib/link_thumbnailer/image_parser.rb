@@ -8,7 +8,9 @@ module LinkThumbnailer
     attr_reader :images
 
     def initialize(urls)
-      @images = perform? ? image_info(urls) : default_images(urls)
+      # TODO: Disabled in order to allow proxy usage
+      # @images = perform? ? image_info(urls) : default_images(urls)
+      @images = default_images(urls)
     end
 
     def size
