@@ -20,7 +20,11 @@ module LinkThumbnailer
         image = images.first
         return unless image
 
-        @first_image = download_with_proxy(image.src)
+        @first_image = Down.open(
+          image.src,
+          proxy: config.proxy,
+          max_size: 10.megabytes
+        )
       end
 
       def video=(video)
@@ -57,22 +61,6 @@ module LinkThumbnailer
           images:       images.map(&:as_json),
           videos:       videos.map(&:as_json)
         }
-      end
-
-      private
-
-      def download_with_proxy(url, proxy: nil)
-        Down.open(
-          url,
-          proxy: proxy,
-          max_size: 10.megabytes
-        )
-      rescue StandardError => e
-        if proxy.present?
-          download_with_proxy(url)
-        else
-          raise
-        end
       end
 
     end
