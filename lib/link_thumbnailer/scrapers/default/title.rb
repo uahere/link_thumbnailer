@@ -8,7 +8,11 @@ module LinkThumbnailer
       class Title < ::LinkThumbnailer::Scrapers::Default::Base
 
         def value
-          model.to_s
+          if model&.text.present?
+            model.to_s
+          else
+            UrlTools.short_url(website.url)
+          end
         end
 
         private
