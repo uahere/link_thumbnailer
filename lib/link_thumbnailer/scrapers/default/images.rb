@@ -9,12 +9,22 @@ module LinkThumbnailer
       class Images < ::LinkThumbnailer::Scrapers::Default::Base
 
         def value
+          return [modelize(website.url)] if direct_image_url?
+
           images.map do |image|
             modelize(image.uri, image.size, image.type)
           end
         end
 
         private
+
+        def direct_image_url?
+          uri = URI.parse(website.url.to_s)
+          path = uri.path.downcase
+          ['.jpg', '.jpeg', '.png', '.gif', '.webp'].any? { |ext| path.end_with?(ext) }
+        rescue URI::InvalidURIError
+          false
+        end
 
         def images
           ::LinkThumbnailer::ImageParser.new(allowed_urls).images
