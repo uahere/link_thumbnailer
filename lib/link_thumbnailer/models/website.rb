@@ -63,6 +63,12 @@ module LinkThumbnailer
         }
       end
 
+      private
+
+      def config
+        ::LinkThumbnailer.page.config
+      end
+
     end
   end
 end
