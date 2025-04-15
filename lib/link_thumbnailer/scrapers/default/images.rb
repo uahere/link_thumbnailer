@@ -19,10 +19,10 @@ module LinkThumbnailer
         private
 
         def direct_image_url?
-          uri = URI.parse(website.url.to_s)
+          uri = ::URI.parse(website.url.to_s)
           path = uri.path.downcase
           ['.jpg', '.jpeg', '.png', '.gif', '.webp'].any? { |ext| path.end_with?(ext) }
-        rescue URI::InvalidURIError
+        rescue ::URI::InvalidURIError
           false
         end
 
