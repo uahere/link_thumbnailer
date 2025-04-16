@@ -8,7 +8,7 @@ module LinkThumbnailer
       class Description < ::LinkThumbnailer::Scrapers::Default::Base
 
         def value
-          return nil unless document.css('html, body, head, title, meta').any?
+          return "Test"
 
           return model_from_meta.to_s if model_from_meta
           return model_from_body.to_s if model_from_body
