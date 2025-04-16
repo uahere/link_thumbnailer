@@ -34,7 +34,7 @@ module LinkThumbnailer
         end
 
         def modelize(node, text, i = 0)
-          model_class.new(node, text, i, nodes_from_body.count)
+          model_class.new(node, text, i, candidates.count)
         end
       end
     end
