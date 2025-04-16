@@ -8,6 +8,8 @@ module LinkThumbnailer
       class Body < ::LinkThumbnailer::Scrapers::Default::Base
 
         def value
+          return nil unless document.css('html, body, head, title, meta').any?
+
           model.paragraphs
         end
 

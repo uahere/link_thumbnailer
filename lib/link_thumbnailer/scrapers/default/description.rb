@@ -20,8 +20,6 @@ module LinkThumbnailer
         end
 
         def model_from_body
-          return nil unless document.css('html, body, head, title, meta').any?
-
           nodes_from_body.each_with_index.map { |node, i| modelize(node, node.text, i) }.sort.last
         end
 
