@@ -8,8 +8,6 @@ module LinkThumbnailer
       class Description < ::LinkThumbnailer::Scrapers::Default::Base
 
         def value
-          return "Test"
-
           return model_from_meta.to_s if model_from_meta
           return model_from_body.to_s if model_from_body
           nil
@@ -22,19 +20,13 @@ module LinkThumbnailer
         end
 
         def model_from_body
-          nodes_from_body.each_with_index.map { |node, i| modelize(node, node.text, i) }.sort.last
+          return nil if candidates.size <= 1
+
+          candidates.each_with_index.map { |node, i| modelize(node, node.text, i) }.sort.last
         end
 
         def node_from_meta
           @node_from_meta ||= meta_xpath(key: :name)
-        end
-
-        def nodes_from_body
-          candidates.select { |node| valid_paragraph?(node) }
-        end
-
-        def valid_paragraph?(node)
-          true
         end
 
         def candidates
