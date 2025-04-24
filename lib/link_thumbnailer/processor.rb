@@ -170,7 +170,8 @@ module LinkThumbnailer
     end
 
     def url=(url)
-      @url = ::URI.parse(url.to_s)
+      normalized_url = Addressable::URI.parse(url.to_s).normalize.to_s
+      @url = ::URI.parse(normalized_url)
     end
 
   end
