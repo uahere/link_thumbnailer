@@ -95,7 +95,7 @@ module LinkThumbnailer
           raise ::LinkThumbnailer::DownloadSizeLimit if too_big_download_size?(body.length)
         end
       end
-      response.body = body
+      response.body = body unless content_disposition_attachment?(response)
       response
     rescue ::Net::HTTPExceptions, ::Net::HTTPClientException, ::SocketError, ::Timeout::Error, ::Net::HTTP::Persistent::Error => e
       if http.proxy_uri.present?
@@ -154,8 +154,11 @@ module LinkThumbnailer
       url.is_a?(::URI::HTTP)
     end
 
+    def content_disposition_attachment?(response)
+      response['Content-Disposition'] =~ /attachment/
+    end
+
     def valid_response_format?(response)
-      return false if response['Content-Disposition'] =~ /attachment/
       return true unless config.raise_on_invalid_format
       return true if response['Content-Type'] =~ /text\/html/
       return true if response['Content-Type'] =~ /application\/html/
