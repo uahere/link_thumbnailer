@@ -72,6 +72,8 @@ module LinkThumbnailer
 
       case response
       when ::Net::HTTPSuccess
+        # Return empty string for direct file links to avoid parsing file content
+        return '' if direct_file_link?(response)
         Response.new(response).body
       when ::Net::HTTPRedirection
         raise ::LinkThumbnailer::FormatNotSupported.new(response['Content-Type']) unless valid_response_format?(response)
@@ -88,14 +90,19 @@ module LinkThumbnailer
 
     def request_in_chunks
       body     = String.new
+
       response = http.request(url) do |resp|
-        raise ::LinkThumbnailer::DownloadSizeLimit if too_big_download_size?(resp.content_length)
-        resp.read_body do |chunk|
-          body.concat(chunk)
-          raise ::LinkThumbnailer::DownloadSizeLimit if too_big_download_size?(body.length)
+        if !direct_file_link?(resp)
+          raise ::LinkThumbnailer::DownloadSizeLimit if too_big_download_size?(resp.content_length)
+          resp.read_body do |chunk|
+            body.concat(chunk)
+            raise ::LinkThumbnailer::DownloadSizeLimit if too_big_download_size?(body.length)
+          end
         end
       end
-      response.body = body if valid_response_format?(response) && !content_disposition_attachment?(response)
+
+      # Set body only if we actually read it
+      response.body = body.present? ? body : ''
       response
     rescue ::Net::HTTPExceptions, ::Net::HTTPClientException, ::SocketError, ::Timeout::Error, ::Net::HTTP::Persistent::Error => e
       if http.proxy_uri.present?
@@ -156,6 +163,18 @@ module LinkThumbnailer
 
     def content_disposition_attachment?(response)
       response['Content-Disposition'] =~ /attachment/
+    end
+
+    def direct_file_link?(response)
+      # Check if Content-Disposition header indicates an attachment
+      return true if content_disposition_attachment?(response)
+
+      # If content type is not parseable HTML/XML/text/images, it's a direct file
+      content_type = response['Content-Type'].to_s
+      return false if content_type.empty?
+
+      # Allow HTML, XML, text, images, and videos (for thumbnails)
+      !content_type.match?(%r{text/html|application/(xhtml\+)?xml|text/(xml|plain)|image/|video/})
     end
 
     def valid_response_format?(response)
