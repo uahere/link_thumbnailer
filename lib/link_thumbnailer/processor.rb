@@ -95,7 +95,7 @@ module LinkThumbnailer
           raise ::LinkThumbnailer::DownloadSizeLimit if too_big_download_size?(body.length)
         end
       end
-      response.body = body unless content_disposition_attachment?(response)
+      response.body = body if valid_response_format?(response) && !content_disposition_attachment?(response)
       response
     rescue ::Net::HTTPExceptions, ::Net::HTTPClientException, ::SocketError, ::Timeout::Error, ::Net::HTTP::Persistent::Error => e
       if http.proxy_uri.present?
