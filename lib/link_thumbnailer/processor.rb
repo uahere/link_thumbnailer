@@ -155,6 +155,7 @@ module LinkThumbnailer
     end
 
     def valid_response_format?(response)
+      return false if response['Content-Disposition'] =~ /attachment/
       return true unless config.raise_on_invalid_format
       return true if response['Content-Type'] =~ /text\/html/
       return true if response['Content-Type'] =~ /application\/html/
